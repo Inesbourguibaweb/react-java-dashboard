@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../services/api';
+import { TextField, Button, Box, Typography } from '@mui/material';
 
 const ClientForm = ({ onClientAdded }) => {
   const [nom, setNom] = useState('');
@@ -22,22 +23,36 @@ const ClientForm = ({ onClientAdded }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add Client</h3>
-      <div>
-        <label>Name:</label>
-        <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} required />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </div>
-      <div>
-        <label>Telephone:</label>
-        <input type="text" value={telephone} onChange={(e) => setTelephone(e.target.value)} />
-      </div>
-      <button type="submit">Add Client</button>
-    </form>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Typography variant="h6">Add Client</Typography>
+      <TextField
+        label="Name"
+        value={nom}
+        onChange={(e) => setNom(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Telephone"
+        value={telephone}
+        onChange={(e) => setTelephone(e.target.value)}
+        fullWidth
+        margin="normal"
+      />
+      <Button type="submit" variant="contained" color="primary">
+        Add Client
+      </Button>
+    </Box>
   );
 };
 

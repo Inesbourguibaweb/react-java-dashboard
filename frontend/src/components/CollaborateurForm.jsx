@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../services/api';
+import { TextField, Button, Box, Typography } from '@mui/material';
 
 const CollaborateurForm = ({ onCollaborateurAdded }) => {
   const [nom, setNom] = useState('');
@@ -22,22 +23,37 @@ const CollaborateurForm = ({ onCollaborateurAdded }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add Collaborateur</h3>
-      <div>
-        <label>Name:</label>
-        <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} required />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </div>
-      <div>
-        <label>Role:</label>
-        <input type="text" value={role} onChange={(e) => setRole(e.target.value)} required />
-      </div>
-      <button type="submit">Add Collaborateur</button>
-    </form>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Typography variant="h6">Add Collaborateur</Typography>
+      <TextField
+        label="Name"
+        value={nom}
+        onChange={(e) => setNom(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Role"
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+      />
+      <Button type="submit" variant="contained" color="primary">
+        Add Collaborateur
+      </Button>
+    </Box>
   );
 };
 

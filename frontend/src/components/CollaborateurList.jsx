@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import CollaborateurForm from './CollaborateurForm';
+import CollaborateurForm from './CollaborateurForm.jsx';
+import { List, ListItem, ListItemText, Typography, Paper } from '@mui/material';
 
 const CollaborateurList = () => {
   const [collaborateurs, setCollaborateurs] = useState([]);
@@ -24,15 +25,19 @@ const CollaborateurList = () => {
   };
 
   return (
-    <div>
+    <Paper>
+      <Typography variant="h4" gutterBottom>
+        Collaborateurs
+      </Typography>
       <CollaborateurForm onCollaborateurAdded={handleCollaborateurAdded} />
-      <h2>Collaborateurs</h2>
-      <ul>
+      <List>
         {collaborateurs.map(collaborateur => (
-          <li key={collaborateur.id}>{collaborateur.nom} - {collaborateur.email}</li>
+          <ListItem key={collaborateur.id}>
+            <ListItemText primary={collaborateur.nom} secondary={collaborateur.email} />
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Paper>
   );
 };
 

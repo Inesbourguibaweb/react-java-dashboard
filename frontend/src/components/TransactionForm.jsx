@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
+import { TextField, Button, Box, Typography, Checkbox, FormControlLabel, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 const TransactionForm = ({ onTransactionAdded }) => {
   const [date, setDate] = useState('');
@@ -37,40 +38,53 @@ const TransactionForm = ({ onTransactionAdded }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add Transaction</h3>
-      <div>
-        <label>Date:</label>
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-      </div>
-      <div>
-        <label>Amount:</label>
-        <input type="number" value={montant} onChange={(e) => setMontant(e.target.value)} required />
-      </div>
-      <div>
-        <label>Paid:</label>
-        <input type="checkbox" checked={payee} onChange={(e) => setPayee(e.target.checked)} />
-      </div>
-      <div>
-        <label>Client:</label>
-        <select value={clientId} onChange={(e) => setClientId(e.target.value)} required>
-          <option value="">Select Client</option>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Typography variant="h6">Add Transaction</Typography>
+      <TextField
+        label="Date"
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <TextField
+        label="Amount"
+        type="number"
+        value={montant}
+        onChange={(e) => setMontant(e.target.value)}
+        required
+        fullWidth
+        margin="normal"
+      />
+      <FormControlLabel
+        control={<Checkbox checked={payee} onChange={(e) => setPayee(e.target.checked)} />}
+        label="Paid"
+      />
+      <FormControl fullWidth margin="normal" required>
+        <InputLabel>Client</InputLabel>
+        <Select value={clientId} onChange={(e) => setClientId(e.target.value)}>
           {clients.map(client => (
-            <option key={client.id} value={client.id}>{client.nom}</option>
+            <MenuItem key={client.id} value={client.id}>{client.nom}</MenuItem>
           ))}
-        </select>
-      </div>
-      <div>
-        <label>Collaborator:</label>
-        <select value={collaborateurId} onChange={(e) => setCollaborateurId(e.target.value)} required>
-          <option value="">Select Collaborator</option>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth margin="normal" required>
+        <InputLabel>Collaborator</InputLabel>
+        <Select value={collaborateurId} onChange={(e) => setCollaborateurId(e.target.value)}>
           {collaborateurs.map(collaborateur => (
-            <option key={collaborateur.id} value={collaborateur.id}>{collaborateur.nom}</option>
+            <MenuItem key={collaborateur.id} value={collaborateur.id}>{collaborateur.nom}</MenuItem>
           ))}
-        </select>
-      </div>
-      <button type="submit">Add Transaction</button>
-    </form>
+        </Select>
+      </FormControl>
+      <Button type="submit" variant="contained" color="primary">
+        Add Transaction
+      </Button>
+    </Box>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import ClientForm from './ClientForm';
+import ClientForm from './ClientForm.jsx';
+import { List, ListItem, ListItemText, Typography, Paper } from '@mui/material';
 
 const ClientList = () => {
   const [clients, setClients] = useState([]);
@@ -24,15 +25,19 @@ const ClientList = () => {
   };
 
   return (
-    <div>
+    <Paper>
+      <Typography variant="h4" gutterBottom>
+        Clients
+      </Typography>
       <ClientForm onClientAdded={handleClientAdded} />
-      <h2>Clients</h2>
-      <ul>
+      <List>
         {clients.map(client => (
-          <li key={client.id}>{client.nom} - {client.email}</li>
+          <ListItem key={client.id}>
+            <ListItemText primary={client.nom} secondary={client.email} />
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Paper>
   );
 };
 
