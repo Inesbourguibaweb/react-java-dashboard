@@ -42,6 +42,7 @@ const ClientForm = ({ onClientAdded }) => {
         fullWidth
         margin="normal"
       />
+      
       <TextField
         label="Telephone"
         value={telephone}
