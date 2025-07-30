@@ -3,23 +3,19 @@ import api from '../services/api';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
 
 const DashboardHome = () => {
-  const [stats, setStats] = useState({
+  const [summary, setSummary] = useState({
     total: 0,
-    paid: 0,
-    unpaid: 0,
+    totalPayee: 0,
+    totalNonPayee: 0,
   });
 
   useEffect(() => {
-    api.get('/transactions')
+    api.get('/transactions/summary')
       .then(response => {
-        const transactions = response.data;
-        const total = transactions.length;
-        const paid = transactions.filter(t => t.payee).length;
-        const unpaid = total - paid;
-        setStats({ total, paid, unpaid });
+        setSummary(response.data);
       })
       .catch(error => {
-        console.error('There was an error fetching the transactions!', error);
+        console.error('There was an error fetching the transaction summary!', error);
       });
   }, []);
 
@@ -33,10 +29,10 @@ const DashboardHome = () => {
           <Card>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                Total Transactions
+                Total Amount
               </Typography>
               <Typography variant="h5" component="h2">
-                {stats.total}
+                {summary.total}
               </Typography>
             </CardContent>
           </Card>
@@ -45,10 +41,10 @@ const DashboardHome = () => {
           <Card>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                Paid Transactions
+                Total Paid
               </Typography>
               <Typography variant="h5" component="h2">
-                {stats.paid}
+                {summary.totalPayee}
               </Typography>
             </CardContent>
           </Card>
@@ -57,10 +53,10 @@ const DashboardHome = () => {
           <Card>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                Unpaid Transactions
+                Total Unpaid
               </Typography>
               <Typography variant="h5" component="h2">
-                {stats.unpaid}
+                {summary.totalNonPayee}
               </Typography>
             </CardContent>
           </Card>

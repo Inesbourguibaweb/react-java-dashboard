@@ -1,5 +1,6 @@
 package com.dashboard.dashboard.service;
 
+import com.dashboard.dashboard.dto.GlobalTransactionSummary;
 import com.dashboard.dashboard.model.Transaction;
 import com.dashboard.dashboard.repository.TransactionRepository;
 import java.util.List;
@@ -30,5 +31,13 @@ public class TransactionService {
 
     public List<Transaction> findByPayee(boolean payee) {
         return repo.findByPayee(payee);
+    }
+
+    public GlobalTransactionSummary getGlobalSummary() {
+        List<Transaction> all = findAll();
+        double total = all.stream().mapToDouble(Transaction::getMontant).sum();
+        double totalPayee = all.stream().filter(Transaction::isPayee).mapToDouble(Transaction::getMontant).sum();
+        double totalNonPayee = total - totalPayee;
+        return new GlobalTransactionSummary(total, totalPayee, totalNonPayee);
     }
 }
