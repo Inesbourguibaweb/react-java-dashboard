@@ -3,19 +3,30 @@ import api from '../services/api';
 import { TextField, Button, Box, Typography } from '@mui/material';
 
 const ClientForm = ({ onClientAdded }) => {
-  const [nom, setNom] = useState('');
-  const [email, setEmail] = useState('');
-  const [telephone, setTelephone] = useState('');
+  const [client, setClient] = useState({
+    nom: '',
+    email: '',
+    telephone: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setClient(prevClient => ({
+      ...prevClient,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const client = { nom, email, telephone };
     api.post('/clients', client)
       .then(response => {
         onClientAdded(response.data);
-        setNom('');
-        setEmail('');
-        setTelephone('');
+        setClient({
+          nom: '',
+          email: '',
+          telephone: ''
+        });
       })
       .catch(error => {
         console.error('There was an error creating the client!', error);
@@ -27,8 +38,9 @@ const ClientForm = ({ onClientAdded }) => {
       <Typography variant="h6">Add Client</Typography>
       <TextField
         label="Name"
-        value={nom}
-        onChange={(e) => setNom(e.target.value)}
+        name="nom"
+        value={client.nom}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
@@ -36,8 +48,9 @@ const ClientForm = ({ onClientAdded }) => {
       <TextField
         label="Email"
         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        name="email"
+        value={client.email}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
@@ -45,8 +58,9 @@ const ClientForm = ({ onClientAdded }) => {
       
       <TextField
         label="Telephone"
-        value={telephone}
-        onChange={(e) => setTelephone(e.target.value)}
+        name="telephone"
+        value={client.telephone}
+        onChange={handleChange}
         fullWidth
         margin="normal"
       />

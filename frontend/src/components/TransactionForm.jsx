@@ -3,11 +3,13 @@ import api from '../services/api';
 import { TextField, Button, Box, Typography, Checkbox, FormControlLabel, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 const TransactionForm = ({ onTransactionAdded }) => {
-  const [date, setDate] = useState('');
-  const [montant, setMontant] = useState('');
-  const [payee, setPayee] = useState(false);
-  const [clientId, setClientId] = useState('');
-  const [collaborateurId, setCollaborateurId] = useState('');
+  const [transaction, setTransaction] = useState({
+    date: '',
+    montant: '',
+    payee: false,
+    clientId: '',
+    collaborateurId: ''
+  });
   const [clients, setClients] = useState([]);
   const [collaborateurs, setCollaborateurs] = useState([]);
 
@@ -20,17 +22,26 @@ const TransactionForm = ({ onTransactionAdded }) => {
       .catch(error => console.error('Error fetching collaborateurs', error));
   }, []);
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setTransaction(prevTransaction => ({
+      ...prevTransaction,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const transaction = { date, montant, payee, clientId, collaborateurId };
     api.post('/transactions', transaction)
       .then(response => {
         onTransactionAdded(response.data);
-        setDate('');
-        setMontant('');
-        setPayee(false);
-        setClientId('');
-        setCollaborateurId('');
+        setTransaction({
+          date: '',
+          montant: '',
+          payee: false,
+          clientId: '',
+          collaborateurId: ''
+        });
       })
       .catch(error => {
         console.error('There was an error creating the transaction!', error);
@@ -43,8 +54,9 @@ const TransactionForm = ({ onTransactionAdded }) => {
       <TextField
         label="Date"
         type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
+        name="date"
+        value={transaction.date}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
@@ -55,19 +67,20 @@ const TransactionForm = ({ onTransactionAdded }) => {
       <TextField
         label="Amount"
         type="number"
-        value={montant}
-        onChange={(e) => setMontant(e.target.value)}
+        name="montant"
+        value={transaction.montant}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
       />
       <FormControlLabel
-        control={<Checkbox checked={payee} onChange={(e) => setPayee(e.target.checked)} />}
+        control={<Checkbox name="payee" checked={transaction.payee} onChange={handleChange} />}
         label="Paid"
       />
       <FormControl fullWidth margin="normal" required>
         <InputLabel>Client</InputLabel>
-        <Select value={clientId} onChange={(e) => setClientId(e.target.value)}>
+        <Select name="clientId" value={transaction.clientId} onChange={handleChange}>
           {clients.map(client => (
             <MenuItem key={client.id} value={client.id}>{client.nom}</MenuItem>
           ))}
@@ -75,7 +88,7 @@ const TransactionForm = ({ onTransactionAdded }) => {
       </FormControl>
       <FormControl fullWidth margin="normal" required>
         <InputLabel>Collaborator</InputLabel>
-        <Select value={collaborateurId} onChange={(e) => setCollaborateurId(e.target.value)}>
+        <Select name="collaborateurId" value={transaction.collaborateurId} onChange={handleChange}>
           {collaborateurs.map(collaborateur => (
             <MenuItem key={collaborateur.id} value={collaborateur.id}>{collaborateur.nom}</MenuItem>
           ))}

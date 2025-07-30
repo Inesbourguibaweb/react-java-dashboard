@@ -3,19 +3,30 @@ import api from '../services/api';
 import { TextField, Button, Box, Typography } from '@mui/material';
 
 const CollaborateurForm = ({ onCollaborateurAdded }) => {
-  const [nom, setNom] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [collaborateur, setCollaborateur] = useState({
+    nom: '',
+    email: '',
+    role: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCollaborateur(prevCollaborateur => ({
+      ...prevCollaborateur,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const collaborateur = { nom, email, role };
     api.post('/collaborateurs', collaborateur)
       .then(response => {
         onCollaborateurAdded(response.data);
-        setNom('');
-        setEmail('');
-        setRole('');
+        setCollaborateur({
+          nom: '',
+          email: '',
+          role: ''
+        });
       })
       .catch(error => {
         console.error('There was an error creating the collaborateur!', error);
@@ -27,8 +38,9 @@ const CollaborateurForm = ({ onCollaborateurAdded }) => {
       <Typography variant="h6">Add Collaborateur</Typography>
       <TextField
         label="Name"
-        value={nom}
-        onChange={(e) => setNom(e.target.value)}
+        name="nom"
+        value={collaborateur.nom}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
@@ -36,16 +48,18 @@ const CollaborateurForm = ({ onCollaborateurAdded }) => {
       <TextField
         label="Email"
         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        name="email"
+        value={collaborateur.email}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
       />
       <TextField
         label="Role"
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
+        name="role"
+        value={collaborateur.role}
+        onChange={handleChange}
         required
         fullWidth
         margin="normal"
