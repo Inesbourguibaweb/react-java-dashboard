@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.dashboard.dashboard.model.Client;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.dashboard.dashboard.model.Client;
 import com.dashboard.dashboard.service.ClientService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ClientController {
-    private final ClientService service ;
+    private final ClientService service;
 
     @GetMapping
     public List<Client> getAll() {
@@ -25,8 +25,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public Client create(@RequestBody Client client) {
+    public Client create(@Valid @RequestBody Client client) {
         return service.save(client);
     }
 }
-

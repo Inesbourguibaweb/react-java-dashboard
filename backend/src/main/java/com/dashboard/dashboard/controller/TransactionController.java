@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.dashboard.dashboard.dto.ClientTransactionSummary;
+import com.dashboard.dashboard.model.Transaction;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.dashboard.dashboard.model.Transaction;
 import com.dashboard.dashboard.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public Transaction create(@RequestBody Transaction t) {
-        return service.save(t);
+    public Transaction create(@Valid @RequestBody Transaction transaction) {
+        return service.save(transaction);
     }
 
     @GetMapping("/payee")
@@ -66,4 +67,3 @@ public class TransactionController {
         return new ClientTransactionSummary(clientId, total, totalPayee, totalNonPayee);
     }
 }
-

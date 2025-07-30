@@ -8,25 +8,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.dashboard.dashboard.model.Collaborateur;
 import com.dashboard.dashboard.service.CollaborateurService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/collaborateurs")
+@RequiredArgsConstructor
 public class CollaborateurController {
-    
+
     private final CollaborateurService service;
-    
-   
-    public CollaborateurController(CollaborateurService service) {
-        this.service = service;
-    }
-    
+
     @GetMapping
     public List<Collaborateur> getAll() {
         return service.findAll();
     }
-    
+
     @PostMapping
-    public Collaborateur create(@RequestBody Collaborateur collab) {
+    public Collaborateur create(@Valid @RequestBody Collaborateur collab) {
         return service.save(collab);
     }
 }
