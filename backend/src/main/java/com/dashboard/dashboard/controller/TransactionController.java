@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashboard.dashboard.dto.ClientTransactionSummary;
 import com.dashboard.dashboard.model.Transaction;
 import com.dashboard.dashboard.service.TransactionService;
 
