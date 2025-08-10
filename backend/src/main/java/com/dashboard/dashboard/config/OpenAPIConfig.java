@@ -14,6 +14,6 @@ public class OpenAPIConfig {
                 .info(new Info()
                         .title("Dashboard API")
                         .version("1.0")
-                        .description("API for the React Java Dashboard application"));
+                        .description("API for the Dashboard application"));
     }
 }
